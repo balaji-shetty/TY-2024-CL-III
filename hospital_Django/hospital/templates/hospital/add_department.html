@@ -1,0 +1,18 @@
+{% extends 'hospital/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Add Department</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Department</button>
+    </form>
+</div>
+
+<!-- Footer -->
+{% comment %} <footer class="text-center mt-4 py-3 bg-light">
+    <hr>
+    <p>&copy; 2025 Hospital Management System. All rights reserved. Under The Guidance of Dr. Balaji Shetty</p>
+</footer> {% endcomment %}
+{% endblock %}

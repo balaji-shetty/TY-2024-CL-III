@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital Patient Appointment System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        #patientList {
+            margin-top: 20px;
+        }
+        #patientList table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #patientList th, 
+        #patientList td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #patientList th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Patient Appointment Management</h2>
+        
+        <form id="patientForm">
+            <div class="form-group">
+                <label>Patient Name</label>
+                <input type="text" id="patientName" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="tel" id="contactNumber" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Department</label>
+                <select id="department" required>
+                    <option value="">Select Department</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Neurology">Neurology</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Doctor</label>
+                <select id="doctor" required>
+                    <option value="">Select Doctor</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Appointment Date</label>
+                <input type="date" id="appointmentDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Billing Amount</label>
+                <input type="number" id="billingAmount" required>
+            </div>
+            
+            <button type="submit" class="btn">Add Appointment</button>
+        </form>
+        
+        <div id="patientList">
+            <h3>Patient Appointments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Billing</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentBody">
+                    <!-- Appointments will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Doctors by department
+        const departmentDoctors = {
+            'Cardiology': ['Dr. Smith', 'Dr. Johnson'],
+            'Neurology': ['Dr. Williams', 'Dr. Brown'],
+            'Pediatrics': ['Dr. Davis', 'Dr. Miller'],
+            'Orthopedics': ['Dr. Wilson', 'Dr. Taylor']
+        };
+
+        // Department select listener
+        document.getElementById('department').addEventListener('change', function() {
+            const doctorSelect = document.getElementById('doctor');
+            doctorSelect.innerHTML = '<option value="">Select Doctor</option>';
+            
+            const selectedDepartment = this.value;
+            if (selectedDepartment) {
+                departmentDoctors[selectedDepartment].forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor;
+                    option.textContent = doctor;
+                    doctorSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('patientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('patientName').value;
+            const contact = document.getElementById('contactNumber').value;
+            const department = document.getElementById('department').value;
+            const doctor = document.getElementById('doctor').value;
+            const date = document.getElementById('appointmentDate').value;
+            const billing = document.getElementById('billingAmount').value;
+            
+            const appointmentBody = document.getElementById('appointmentBody');
+            const newRow = appointmentBody.insertRow();
+            
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${department}</td>
+                <td>${doctor}</td>
+                <td>${date}</td>
+                <td>$${billing}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="this.closest('tr').remove()">Delete</button>
+                </td>
+            `;
+            
+            // Reset form
+            this.reset();
+            document.getElementById('doctor').innerHTML = '<option value="">Select Doctor</option>';
+        });
+    </script>
+
+    <!-- Footer -->
+<footer class="text-center mt-4 py-3 bg-light">
+    <hr>
+    <p>&copy; 2025 Hospital Management System. All rights reserved. Under The Guidance of Dr. Balaji Shetty</p>
+</footer>
+</body>
+</html>
